@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Login.css';
+import { registerUser, loginUser, getCurrentUser, logoutUser } from '../services/loginServices';
+import './login.css';
 
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -7,34 +8,44 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setError('');
 
-        if (!email || !password) {
-            setError('Email and password are required');
-            return;
-        }
-
-        if (!isLogin && password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-
-        // Placeholder for authentication logic
-        if (isLogin) {
-            if (email === 'parent@example.com' && password === 'password') {
+        try {
+            if (isLogin) {
+                loginUser(email, password);
+                setCurrentUser(getCurrentUser());
                 alert('Login successful!');
                 // Redirect to parent dashboard or another page
             } else {
-                setError('Invalid email or password');
+                if (password !== confirmPassword) {
+                    throw new Error('Passwords do not match');
+                }
+                registerUser(email, password);
+                alert('Sign up successful! Please log in.');
+                setIsLogin(true);
             }
-        } else {
-            alert('Sign up successful!');
-            // Handle user registration logic
+        } catch (err) {
+            setError(err.message);
         }
     };
+
+    const handleLogout = () => {
+        logoutUser();
+        setCurrentUser(null);
+    };
+
+    if (currentUser) {
+        return (
+            <div className="auth-container">
+                <h2>Welcome, {currentUser.email}</h2>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
+        );
+    }
 
     return (
         <div className="auth-container">
