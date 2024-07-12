@@ -11,6 +11,7 @@ const Home = () => {
                     <li><Link to="/maths">Learn Maths</Link></li>
                     <li><Link to="/science">Learn Science</Link></li>
                     <li><Link to="/parent">Parent Section</Link></li>
+                    <li><Link to="/login">Parent Login</Link></li> {/* Add this line */}
                 </ul>
             </nav>
         </div>
