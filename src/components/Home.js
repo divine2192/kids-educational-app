@@ -22,7 +22,7 @@ const Home = () => {
                 </div>
             ) : (
                 <div>
-                    <p>Please <Link to="/auth">Login or Sign Up</Link> to access the content.</p>
+                    <p>Please <Link to="/login">Login or Sign Up</Link> to access the content.</p>
                 </div>
             )}
         </div>
